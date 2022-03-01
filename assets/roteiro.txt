@@ -1,0 +1,14 @@
+
+
+Automato auto = new Automato()
+
+PASSOS:
+1 - Ler Arquivo -- DONE
+2 - Criar classe Automato -- DONE
+3 - Instanciar objeto automato conforme arquivo lido -- DONE
+4 - input de palavra
+5 - Processamento da cadeia
+5.1 Validar se todos os caracteres da palavra de entrada pertencem ao alfabeto. Caso não, printar a string "REJEITA"
+5.2 Iniciar processamento
+5.3 Validar cada entradas dos estados. Caso não for uma entrada válida para o estado,  printar a string "REJEITA". Caso for válida, printar processamento.
+5.4 Validar se o último estado é final. Caso não for printar a string "REJEITA", Caso seja final, printar a string "ACEITA"
