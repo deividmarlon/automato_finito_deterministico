@@ -1,91 +1,58 @@
-import jdk.swing.interop.SwingInterOpUtils;
-
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
-import org.json.JSONObject;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException{
+    public static void main(String[] args) {
 
         Automato auto = new Automato();
+        String word;
 
         try {
-            FileInputStream inputStream = new FileInputStream("C:/temp/java_projects/FirstJava/assets/dados.txt");
+            FileInputStream inputStream = new FileInputStream("C:\\Users\\danie\\Documents\\MEGAsync\\2 Ano\\LFA\\Trabalho 1\\dados.txt");
             InputStreamReader reader = new InputStreamReader(inputStream);
             BufferedReader br = new BufferedReader(reader);
-            String line = br.readLine();
+            Arquivo arq = new Arquivo();
 
-            //START:criar vetor char para o alphabet com essa primera line
-            line = line.substring(line.indexOf('{')+1,line.indexOf('}'));
-            String [] alphabet = line.split(",");
-            auto.setAlfabeto(alphabet);
+            //lê o alfabeto
+            auto.setAlfabeto(arq.lerAlfabeto(br));
             System.out.println("ALFABETO:");
             System.out.println(Arrays.toString(auto.getAlfabeto()));
-            //END:criar vetor char para o alfabeto com essa primera line
 
-            line = br.readLine();
-            //START:criar vetor string para os estados com essa segunda line
-            line = line.substring(line.indexOf('{')+1,line.indexOf('}'));
-            String [] estados = line.split(",");
-            auto.setEstados(estados);
+            //lê os estados
+            auto.setEstados(arq.lerEstados(br));
             System.out.println("ESTADOS:");
             System.out.println(Arrays.toString(auto.getEstados()));
-            //END:criar vetor string para os estados com essa segunda line
 
-            line = br.readLine();
-            //START:criar vetor string para os finais com essa terceira line
-            line = line.substring(line.indexOf('{')+1,line.indexOf('}'));
-            String [] finais = line.split(",");
-            auto.setFinais(finais);
+            //lê os estados finais
+            auto.setFinais(arq.lerFinais(br));
             System.out.println("FINAIS:");
             System.out.println(Arrays.toString(auto.getFinais()));
-            //END:criar vetor string para os finais com essa terceira line
 
-
-            //START:lendo transições
-            JSONObject transitions = new JSONObject();
-            line = br.readLine();
-            while(line != null) {
-                line = line.replaceAll("[() ]", "");
-                line = line.replaceAll("[)=]", ",");
-                String[] transitionConfigs = line.split(",");
-                JSONObject transitionProp = new JSONObject();
-
-                transitionProp.put(transitionConfigs[1],transitionConfigs[2]);
-                if(transitions.has(transitionConfigs[0])){
-                    transitions.getJSONObject(transitionConfigs[0]).put(transitionConfigs[1],transitionConfigs[2]);
-                }else{
-                    transitions.put(transitionConfigs[0],transitionProp);
-                }
-                line = br.readLine();
-            }
-            auto.setTransicoes(transitions);
+            //lê as transições
+            auto.setTransicoes(arq.lerTransicoes(br));
             System.out.println("TRANSICOES:");
             System.out.println(auto.getTransicoes());
+
+            //fecha arquivo
             br.close();
             reader.close();
             inputStream.close();
 
-            //START:Input palavra
-            int x = 0;
+            //pede pela palavra até que seja digitado "fim"
             Scanner scan = new Scanner(System.in);
-            while(x<10){
+            do{
                 System.out.println("Enter a word");
-                String word = scan.nextLine();
+                word = scan.nextLine();
                 if(auto.validateWord(word)){
                     auto.processWord(word);
                 }else{
                     System.out.println("REJEITA");
                 }
-                x++;
-            }
+            }while(!word.equals("fim"));
             scan.close();
-            String t = "TESTE";
 
         } catch (IOException e) {
             e.printStackTrace();
