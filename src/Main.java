@@ -43,15 +43,17 @@ public class Main {
 
             //pede pela palavra até que seja digitado "fim"
             Scanner scan = new Scanner(System.in);
-            do{
-                System.out.println("Enter a word");
-                word = scan.nextLine();
-                if(auto.validateWord(word)){
+            System.out.println("Enter a word");
+            word = scan.nextLine();
+            while(!word.equals("fim")) {
+                if (auto.validateWord(word)) {
                     auto.processWord(word);
-                }else{
+                } else {
                     System.out.println("REJEITA");
                 }
-            }while(!word.equals("fim"));
+                System.out.println("Enter a word");
+                word = scan.nextLine();
+            }
             scan.close();
 
         } catch (IOException e) {
