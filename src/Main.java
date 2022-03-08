@@ -1,70 +1,56 @@
-import java.io.*;
-import java.util.Arrays;
 import java.util.Scanner;
-
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Automato auto = new Automato();
+        //Declarations
+        Automaton auto = new Automaton();
         Scanner scan = new Scanner(System.in);
-        String word, data;
-        System.out.println("Digite o nome do arquivo.");
-        data = scan.nextLine();
+        String word, fileName;
 
-        while(!data.equals("fim")) {
+
+        //Loop: Ask file name until !@# is entered
+        System.out.println("Type the file name: (Use !@# to exit)");
+        fileName = scan.nextLine();
+        while(!fileName.equals("!@#")) {
             try {
-                FileInputStream inputStream = new FileInputStream(data);
-                InputStreamReader reader = new InputStreamReader(inputStream);
-                BufferedReader br = new BufferedReader(reader);
-                Arquivo arq = new Arquivo();
+                File file = new File(fileName);
 
-                //lê o alfabeto
-                auto.setAlfabeto(arq.lerAlfabeto(br));
-                System.out.println("ALFABETO:");
-                System.out.println(Arrays.toString(auto.getAlfabeto()));
+                //Reading alphabet
+                auto.setAlphabet(file.readAlphabet());
 
-                //lê os estados
-                auto.setEstados(arq.lerEstados(br));
-                System.out.println("ESTADOS:");
-                System.out.println(Arrays.toString(auto.getEstados()));
+                //Reading states
+                auto.setStates(file.readStates());
 
-                //lê os estados finais
-                auto.setFinais(arq.lerFinais(br));
-                System.out.println("FINAIS:");
-                System.out.println(Arrays.toString(auto.getFinais()));
+                //Reading final states
+                auto.setFinalStates(file.readFinalStates());
 
-                //lê as transições
-                auto.setTransicoes(arq.lerTransicoes(br));
-                System.out.println("TRANSICOES:");
-                System.out.println(auto.getTransicoes());
+                //Reading transitions
+                auto.setTransitions(file.readTransitions());
 
-                //fecha arquivo
-                br.close();
-                reader.close();
-                inputStream.close();
+                //Closing file
+                file.closeFile();
 
-                //pede pela palavra até que seja digitado "fim"
-                System.out.println("Enter a word");
+                //Loop: Ask a word until !@# is entered
+                System.out.println("Enter a word: (Use !@# to exit)");
                 word = scan.nextLine();
-                while (!word.equals("fim")) {
-                    if (auto.validateWord(word)) {
-                        auto.processWord(word);
-                    } else {
-                        System.out.println("REJEITA");
-                    }
-                    System.out.println("Enter a word");
+                while (!word.equals("!@#")) {
+                    auto.processWord(word);
+                    System.out.println("Enter a word: (Use !@# to exit)");
                     word = scan.nextLine();
                 }
-                scan.close();
-
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 break;
             }
+            System.out.println("Type the file name: (Use !@# to exit)");
+            fileName = scan.nextLine();
         }
+        //Closing scan
+        scan.close();
 
+        System.out.println("Exiting the program");
     }
 
 }

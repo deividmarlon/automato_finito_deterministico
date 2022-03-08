@@ -1,10 +1,10 @@
 
 
-Automato auto = new Automato()
+Automaton auto = new Automaton()
 
 PASSOS:
-1 - Ler Arquivo -- DONE
-2 - Criar classe Automato -- DONE
+1 - Ler File -- DONE
+2 - Criar classe Automaton -- DONE
 3 - Instanciar objeto automato conforme arquivo lido -- DONE
 4 - input de palavra
 5 - Processamento da cadeia
